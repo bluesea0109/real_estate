@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import { store, history } from 'store';
-import { API_BASE_URL } from 'config';
+import { API_BASE_URL } from 'utils/config';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
