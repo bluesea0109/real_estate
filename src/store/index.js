@@ -5,6 +5,7 @@ import { routerMiddleware, connectRouter } from 'connected-react-router';
 import { all } from 'redux-saga/effects';
 import authMiddleware from 'store/middlewares/auth';
 import { reducer as authReducer, saga as authSaga } from 'store/modules/auth';
+import { reducer as userReducer, saga as userSaga } from 'store/modules/user';
 
 // Create a history of your choosing (we're using a browser history in this case)
 export const history = createBrowserHistory();
@@ -32,6 +33,7 @@ const composeEnhancers =
 export const store = createStore(
   combineReducers({
     auth: authReducer,
+    user: userReducer,
     router: connectRouter(history),
   }),
   composeEnhancers(...enhancers),
@@ -39,5 +41,5 @@ export const store = createStore(
 
 // Run saga middleware
 sagaMiddleware.run(function* rootSaga() {
-  yield all([authSaga()]);
+  yield all([authSaga(), userSaga()]);
 });
