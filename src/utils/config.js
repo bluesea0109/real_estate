@@ -7,3 +7,11 @@ export const REALTOR = 'realtor';
 export const CLIENT = 'client';
 
 export const ROLES = [ADMIN, REALTOR, CLIENT];
+
+export const DEFAULT_PAGE_SIZE = 10;
+
+export const COLORS = {
+  [ADMIN]: 'volcano',
+  [REALTOR]: 'cyan',
+  [CLIENT]: 'geekblue',
+};
