@@ -1,3 +1,4 @@
+export { default as Page404 } from './404';
 export { default as SignInPage } from './SignIn';
 export { default as SignUpPage } from './SignUp';
 export { default as ProfilePage } from './Profile';

@@ -5,12 +5,33 @@ import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import { store, history } from 'store';
 import { API_BASE_URL } from 'utils/config';
+import { getAuthToken } from 'utils/token';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import { notification } from 'antd';
 import 'styles/main.scss';
 
 axios.defaults.baseURL = API_BASE_URL;
+
+axios.interceptors.request.use((config) => {
+  const token = getAuthToken();
+
+  if (!config) {
+    config = {};
+  }
+
+  if (token) {
+    config.headers['Authorization'] = token;
+  }
+
+  return config;
+});
+
+notification.config({
+  placement: 'bottomLeft',
+  duration: 2,
+});
 
 ReactDOM.render(
   <Provider store={store}>
