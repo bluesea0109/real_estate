@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
-import { SignInPage, SignUpPage } from 'pages';
+import { SignInPage, SignUpPage, ProfilePage, UserPage } from 'pages';
 import { MainLayout } from 'containers';
 import {
   userIsNotAuthenticated,
@@ -10,11 +10,9 @@ import {
 const AuthenticatedRoutes = () => (
   <MainLayout>
     <Switch>
-      <Redirect exact from='/' to='/restaurants' />
-      {/* <Route exact path='/profile' component={ProfilePage} />
+      <Redirect exact from='/' to='/profile' />
+      <Route exact path='/profile' component={ProfilePage} />
       <Route exact path='/users' component={UserPage} />
-      <Route exact path='/restaurants' component={RestaurantListPage} />
-      <Route exact path='/restaurants/:id' component={RestaurantDetailPage} /> */}
     </Switch>
   </MainLayout>
 );

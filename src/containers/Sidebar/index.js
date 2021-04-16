@@ -2,12 +2,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
-import {
-  ShoppingCartOutlined,
-  ShopOutlined,
-  TeamOutlined,
-  UserOutlined,
-} from '@ant-design/icons';
+import { ShopOutlined, TeamOutlined, UserOutlined } from '@ant-design/icons';
 import { selectIsAdmin } from 'store/modules/auth';
 
 const Sidebar = () => {
@@ -18,7 +13,7 @@ const Sidebar = () => {
   const isAdmin = useSelector(selectIsAdmin);
 
   function getDefaultSelectedKey() {
-    const keys = ['/profile', '/users', '/restaurants'];
+    const keys = ['/profile', '/users'];
 
     for (let key of keys) {
       if (location.pathname.includes(key)) {
@@ -58,12 +53,6 @@ const Sidebar = () => {
             </Link>
           </Menu.Item>
         )}
-        <Menu.Item key='/restaurants'>
-          <Link to='/restaurants'>
-            <ShoppingCartOutlined />
-            <span>Restuarants</span>
-          </Link>
-        </Menu.Item>
       </Menu>
     </Layout.Sider>
   );
