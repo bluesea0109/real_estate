@@ -8,7 +8,7 @@ const User = () => {
   const isAdmin = useSelector(selectIsAdmin);
 
   if (!isAdmin) {
-    return <Redirect to='/restaurants' />;
+    return <Redirect to='/aprtments' />;
   }
 
   return (

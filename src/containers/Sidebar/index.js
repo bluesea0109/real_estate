@@ -2,27 +2,18 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
-import { ShopOutlined, TeamOutlined, UserOutlined } from '@ant-design/icons';
+import {
+  ApartmentOutlined,
+  TeamOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
 import { selectIsAdmin } from 'store/modules/auth';
 
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
-
   const location = useLocation();
 
   const isAdmin = useSelector(selectIsAdmin);
-
-  function getDefaultSelectedKey() {
-    const keys = ['/profile', '/users'];
-
-    for (let key of keys) {
-      if (location.pathname.includes(key)) {
-        return [key];
-      }
-    }
-
-    return [];
-  }
 
   return (
     <Layout.Sider
@@ -32,27 +23,33 @@ const Sidebar = () => {
       onCollapse={setIsCollapsed}
     >
       <Link to='/'>
-        <ShopOutlined className='site-logo' />
+        <ApartmentOutlined className='site-logo' />
       </Link>
       <Menu
         theme='dark'
         mode='inline'
-        defaultSelectedKeys={getDefaultSelectedKey()}
+        defaultSelectedKeys={location.pathname.split('/')[1]}
       >
-        <Menu.Item key='/profile'>
+        <Menu.Item key='profile'>
           <Link to='/profile'>
             <UserOutlined />
             <span>Profile</span>
           </Link>
         </Menu.Item>
         {isAdmin && (
-          <Menu.Item key='/users'>
+          <Menu.Item key='users'>
             <Link to='/users'>
               <TeamOutlined />
               <span>Users</span>
             </Link>
           </Menu.Item>
         )}
+        <Menu.Item key='apartments'>
+          <Link to='/apartments'>
+            <ApartmentOutlined />
+            <span>Apartments</span>
+          </Link>
+        </Menu.Item>
       </Menu>
     </Layout.Sider>
   );
