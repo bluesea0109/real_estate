@@ -11,7 +11,7 @@ import { MAP_API_KEY } from 'utils/config';
 
 const MyMarker = ({ text, tooltip }) => (
   <div className='map-circle'>
-    <span className='map-circleText' title={tooltip}>
+    <span className='map-circle-text' title={tooltip}>
       {text}
     </span>
   </div>
