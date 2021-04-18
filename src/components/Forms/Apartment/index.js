@@ -21,8 +21,12 @@ const tailLayout = {
 
 const ApartmentForm = ({ initialValues, isLoading, onSubmit }) => {
   const [addressOptions, setAddressOptions] = useState([]);
-  const [longitude, setLongitude] = useState(null);
-  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(
+    initialValues ? initialValues.longitude : null,
+  );
+  const [latitude, setLatitude] = useState(
+    initialValues ? initialValues.latitude : null,
+  );
 
   function handleSubmit(values) {
     onSubmit({
@@ -92,7 +96,14 @@ const ApartmentForm = ({ initialValues, isLoading, onSubmit }) => {
       <Form.Item
         name='floorAreaSize'
         label='Floor Area Size'
-        rules={[{ required: true, message: 'Please input floor area size!' }]}
+        rules={[
+          {
+            required: true,
+            message: 'Please input correct floor area size!',
+            type: 'number',
+            min: 0,
+          },
+        ]}
       >
         <InputNumber placeholder='Floor Area Size' />
       </Form.Item>
@@ -100,7 +111,14 @@ const ApartmentForm = ({ initialValues, isLoading, onSubmit }) => {
       <Form.Item
         name='pricePerMonth'
         label='Price Per Month'
-        rules={[{ required: true, message: 'Please input price per month!' }]}
+        rules={[
+          {
+            required: true,
+            message: 'Please input correct price per month!',
+            type: 'number',
+            min: 0,
+          },
+        ]}
       >
         <InputNumber placeholder='Price Per Month' />
       </Form.Item>
@@ -108,7 +126,14 @@ const ApartmentForm = ({ initialValues, isLoading, onSubmit }) => {
       <Form.Item
         name='numberOfRooms'
         label='Number of Rooms'
-        rules={[{ required: true, message: 'Please input number of rooms!' }]}
+        rules={[
+          {
+            required: true,
+            message: 'Please input correct number of rooms!',
+            type: 'number',
+            min: 0,
+          },
+        ]}
       >
         <InputNumber placeholder='Number of Rooms!' />
       </Form.Item>
