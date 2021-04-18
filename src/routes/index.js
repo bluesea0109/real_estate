@@ -5,7 +5,7 @@ import {
   SignUpPage,
   ProfilePage,
   UserPage,
-  ApartmentListPage,
+  ApartmentPage,
 } from 'pages';
 import { MainLayout } from 'containers';
 import {
@@ -19,7 +19,7 @@ const AuthenticatedRoutes = () => (
       <Redirect exact from='/' to='/apartments' />
       <Route exact path='/profile' component={ProfilePage} />
       <Route exact path='/users' component={UserPage} />
-      <Route exact path='/apartments' component={ApartmentListPage} />
+      <Route exact path='/apartments' component={ApartmentPage} />
     </Switch>
   </MainLayout>
 );

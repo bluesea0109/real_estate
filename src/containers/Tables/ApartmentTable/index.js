@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import { Button, Modal, Table } from 'antd';
+import { Button, Modal, Table, Tooltip } from 'antd';
 import {
   DeleteOutlined,
   EditOutlined,
@@ -15,7 +15,6 @@ import {
   CREATE_APARTMENT,
   UPDATE_APARTMENT,
   DELETE_APARTMENT,
-  listApartment,
   createApartment,
   updateApartment,
   deleteApartment,
@@ -25,7 +24,7 @@ import {
 import { Drawer, ApartmentForm } from 'components';
 import { resolvedAction } from 'utils/actions';
 
-const ApartmentTable = () => {
+const ApartmentTable = ({ getListApartment }) => {
   const [editingRecord, setEditingRecord] = useState(null);
   const [isDrawerOpened, setIsDrawerOpened] = useState(false);
 
@@ -33,10 +32,6 @@ const ApartmentTable = () => {
   const apartments = useSelector(selectApartments);
   const status = useSelector(selectApartmentStatus);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(listApartment());
-  }, [dispatch]);
 
   useEffect(() => {
     if (
@@ -80,7 +75,55 @@ const ApartmentTable = () => {
       dataIndex: 'name',
       key: 'name',
       render: (_, record) => (
-        <Link to={`/apartments/${record.id}`}>{record.name}</Link>
+        <Tooltip title={record.name}>
+          <span>
+            {record.name.length > 10
+              ? record.name.substring(0, 10) + '...'
+              : record.name}
+          </span>
+        </Tooltip>
+      ),
+    },
+    {
+      title: 'Description',
+      dataIndex: 'description',
+      key: 'description',
+      render: (_, record) => (
+        <Tooltip title={record.description}>
+          <span>
+            {record.description.length > 20
+              ? record.description.substring(0, 20) + '...'
+              : record.description}
+          </span>
+        </Tooltip>
+      ),
+    },
+    {
+      title: 'Floor Area Size',
+      dataIndex: 'floorAreaSize',
+      key: 'floorAreaSize',
+    },
+    {
+      title: 'Price Per Month',
+      dataIndex: 'pricePerMonth',
+      key: 'pricePerMonth',
+    },
+    {
+      title: 'Number of Rooms',
+      dataIndex: 'numberOfRooms',
+      key: 'numberOfRooms',
+    },
+    {
+      title: 'Address',
+      dataIndex: 'address',
+      key: 'address',
+    },
+    {
+      title: 'Status',
+      dataIndex: 'rented',
+      key: 'rented',
+      render: (_, record) => (
+        <span>{record.rented ? 'rented' : 'available'}</span>
       ),
     },
     {
@@ -153,9 +196,7 @@ const ApartmentTable = () => {
           current: apartments.currentPage,
           size: 'default',
         }}
-        onChange={(pagination) =>
-          dispatch(listApartment({ page: pagination.current }))
-        }
+        onChange={(pagination) => getListApartment(pagination.current)}
       />
       <Drawer
         title='Aparment'
@@ -170,6 +211,10 @@ const ApartmentTable = () => {
       </Drawer>
     </React.Fragment>
   );
+};
+
+ApartmentTable.propTypes = {
+  getListApartment: PropTypes.func.isRequired,
 };
 
 export default ApartmentTable;

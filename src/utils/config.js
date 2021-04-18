@@ -15,3 +15,6 @@ export const COLORS = {
   [REALTOR]: 'cyan',
   [CLIENT]: 'geekblue',
 };
+
+export const MAP_API_KEY = 'AIzaSyD4r8rmaaJZF85cNI1BfowhkkfwwkdxDl4';
+export const MAP_BASE_URL = 'https://maps.googleapis.com/maps/api/geocode/json';

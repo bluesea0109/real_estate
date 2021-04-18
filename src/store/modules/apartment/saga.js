@@ -2,7 +2,7 @@ import axios from 'axios';
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { notification } from 'antd';
 import * as actions from './actions';
-import { errorParser } from 'utils/error-handler';
+import { getErrorMessage, errorParser } from 'utils/error-handler';
 
 export const doListApartment = function* ({ payload }) {
   try {
@@ -13,7 +13,8 @@ export const doListApartment = function* ({ payload }) {
     );
     yield put(actions.listApartmentSuccess(res.data));
   } catch (error) {
-    yield put(actions.listApartmentFail(error));
+    yield put(actions.listApartmentFail(errorParser(error)));
+    notification.error({ message: getErrorMessage(error) });
   }
 };
 
@@ -24,7 +25,8 @@ export const doCreateApartment = function* ({ payload }) {
     yield put(actions.listApartment({ page: 1 }));
     notification.success({ message: 'Successfully created apartment' });
   } catch (error) {
-    yield put(actions.createApartmentFail(error));
+    yield put(actions.createApartmentFail(errorParser(error)));
+    notification.error({ message: getErrorMessage(error) });
   }
 };
 
@@ -34,6 +36,7 @@ export const doGetApartment = function* ({ payload }) {
     yield put(actions.getApartmentSuccess(res.data));
   } catch (error) {
     yield put(actions.getApartmentFail(errorParser(error)));
+    notification.error({ message: getErrorMessage(error) });
   }
 };
 
@@ -44,6 +47,7 @@ export const doUpdateApartment = function* ({ payload }) {
     notification.success({ message: 'Successfully updated apartment' });
   } catch (error) {
     yield put(actions.updateApartmentFail(errorParser(error)));
+    notification.error({ message: getErrorMessage(error) });
   }
 };
 
@@ -54,7 +58,8 @@ export const doDeleteApartment = function* ({ payload }) {
     yield put(actions.listApartment({ page: 1 }));
     notification.success({ message: 'Successfully deleted apartment' });
   } catch (error) {
-    yield put(actions.deleteApartmentFail(error));
+    yield put(actions.deleteApartmentFail(errorParser(error)));
+    notification.error({ message: getErrorMessage(error) });
   }
 };
 

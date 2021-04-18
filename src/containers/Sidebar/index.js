@@ -28,7 +28,7 @@ const Sidebar = () => {
       <Menu
         theme='dark'
         mode='inline'
-        defaultSelectedKeys={location.pathname.split('/')[1]}
+        defaultSelectedKeys={location.pathname.split('/')[1] || 'apartments'}
       >
         <Menu.Item key='profile'>
           <Link to='/profile'>

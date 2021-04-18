@@ -1,26 +1,75 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, InputNumber, Switch, AutoComplete } from 'antd';
+
+import { MAP_API_KEY, MAP_BASE_URL } from 'utils/config';
 
 const layout = {
   labelCol: {
-    span: 8,
+    span: 10,
   },
   wrapperCol: {
-    span: 16,
+    span: 14,
   },
 };
 const tailLayout = {
   wrapperCol: {
-    offset: 8,
-    span: 16,
+    offset: 10,
+    span: 14,
   },
 };
 
 const ApartmentForm = ({ initialValues, isLoading, onSubmit }) => {
+  const [addressOptions, setAddressOptions] = useState([]);
+  const [longitude, setLongitude] = useState(null);
+  const [latitude, setLatitude] = useState(null);
+
   function handleSubmit(values) {
-    onSubmit({ ...initialValues, ...values });
+    onSubmit({
+      ...initialValues,
+      ...values,
+      longitude,
+      latitude,
+    });
   }
+
+  const onSearch = (searchValue) => {
+    if (!searchValue) {
+      return;
+    }
+
+    fetch(`${MAP_BASE_URL}?key=${MAP_API_KEY}&address=${searchValue}`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (!data?.results) {
+          return;
+        }
+
+        let addresses = [];
+
+        data.results.forEach((item) => {
+          addresses.push({
+            value: item.formatted_address,
+            longitude: item.geometry.location.lng,
+            latitude: item.geometry.location.lat,
+          });
+        });
+
+        setAddressOptions(addresses);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const onSelect = (selectValue) => {
+    addressOptions.forEach((item) => {
+      if (item.value === selectValue) {
+        setLatitude(item.latitude);
+        setLongitude(item.longitude);
+      }
+    });
+  };
 
   return (
     <Form {...layout} initialValues={initialValues} onFinish={handleSubmit}>
@@ -30,6 +79,60 @@ const ApartmentForm = ({ initialValues, isLoading, onSubmit }) => {
         rules={[{ required: true, message: 'Please input name!' }]}
       >
         <Input placeholder='Name' />
+      </Form.Item>
+
+      <Form.Item
+        name='description'
+        label='Description'
+        rules={[{ required: true, message: 'Please input description!' }]}
+      >
+        <Input.TextArea placeholder='Description' />
+      </Form.Item>
+
+      <Form.Item
+        name='floorAreaSize'
+        label='Floor Area Size'
+        rules={[{ required: true, message: 'Please input floor area size!' }]}
+      >
+        <InputNumber placeholder='Floor Area Size' />
+      </Form.Item>
+
+      <Form.Item
+        name='pricePerMonth'
+        label='Price Per Month'
+        rules={[{ required: true, message: 'Please input price per month!' }]}
+      >
+        <InputNumber placeholder='Price Per Month' />
+      </Form.Item>
+
+      <Form.Item
+        name='numberOfRooms'
+        label='Number of Rooms'
+        rules={[{ required: true, message: 'Please input number of rooms!' }]}
+      >
+        <InputNumber placeholder='Number of Rooms!' />
+      </Form.Item>
+
+      <Form.Item
+        name='address'
+        label='Address'
+        rules={[{ required: true, message: 'Please input address!' }]}
+      >
+        <AutoComplete
+          options={addressOptions}
+          onSearch={onSearch}
+          onSelect={onSelect}
+          placeholder='Please input city and zip code!'
+        />
+      </Form.Item>
+
+      <Form.Item
+        name='rented'
+        label='Status'
+        rules={[{ required: false, message: 'Please select status!' }]}
+        valuePropName='checked'
+      >
+        <Switch />
       </Form.Item>
 
       <Form.Item {...tailLayout}>
@@ -51,6 +154,13 @@ ApartmentForm.propTypes = {
   initialValues: PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string,
+    desctiption: PropTypes.string,
+    floorAreaSize: PropTypes.number,
+    pricePerMonth: PropTypes.number,
+    numberOfRooms: PropTypes.number,
+    rented: PropTypes.bool,
+    latitude: PropTypes.number,
+    longitude: PropTypes.number,
   }),
   onSubmit: PropTypes.func.isRequired,
 };
